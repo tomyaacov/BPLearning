@@ -133,6 +133,6 @@ start_time.m=m(1);
 start_time.s=s(1);
 timestart=hyp(1,2);
 time_tot=timevector-timestart;
-hyp(:,2)=hyp(:,2)-hyp(1,2);
+%hyp(:,2)=hyp(:,2)-hyp(1,2);
 %eval (['save micro_str' file(1:end-4) ' time_tot duration type_ar start_time'])
 %eval (['save hyp' file(1:end-4) ' hyp'])
