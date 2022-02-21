@@ -5,8 +5,11 @@ import tensorflow as tf
 import rstr
 from sklearn.model_selection import train_test_split
 from train_config import *
+import os
 
-with open('data/' + EXPERIMENT_NAME + '_graph_data.csv', 'r') as f:
+DIR = os.path.dirname(os.path.realpath(__file__))
+
+with open(DIR + '/data/' + EXPERIMENT_NAME + '_graph_data.csv', 'r') as f:
     dataset = []
     labels = []
     for line in f:
@@ -79,4 +82,4 @@ plt.plot(lstm_val_acc, "g--", label='lstm_val_acc')
 plt.plot(rnn_acc, "r-", label='rnn_acc')
 plt.plot(rnn_val_acc, "r--", label='rnn_val_acc')
 plt.legend()
-plt.savefig("out/" + EXPERIMENT_NAME + '.png')
+plt.savefig(DIR + "/out/" + EXPERIMENT_NAME + '.png')
