@@ -1,5 +1,5 @@
 from bp_network import CustomRNNCell, preprocess
-import graphviz
+# import graphviz
 import numpy as np
 import tensorflow as tf
 import rstr
@@ -11,13 +11,13 @@ for i in range(FIXED_M.shape[0]):
     for j in range(FIXED_M.shape[1]):
         FIXED_M[i,j,np.random.choice(NUMBER_OF_STATES)] = 1
 
-dot = graphviz.Digraph()
-# for i in range(NUMBER_OF_STATES):
-#     dot.node(str(i))
-for i in range(FIXED_M.shape[0]):
-    for j in range(FIXED_M.shape[1]):
-        dot.edge(str(j), str(np.argmax(FIXED_M[i,j,:])),label=DICTIONARY[i])
-dot.render("data/graph")
+# dot = graphviz.Digraph()
+# # for i in range(NUMBER_OF_STATES):
+# #     dot.node(str(i))
+# for i in range(FIXED_M.shape[0]):
+#     for j in range(FIXED_M.shape[1]):
+#         dot.edge(str(j), str(np.argmax(FIXED_M[i,j,:])),label=DICTIONARY[i])
+# dot.render("data/" + EXPERIMENT_NAME + "_graph")
 
 cell = CustomRNNCell(NUMBER_OF_STATES, dictionary_size=len(DICTIONARY), fixed_weights=FIXED_M)
 rnn = tf.keras.layers.RNN(cell)  # , return_sequences=True
@@ -40,6 +40,6 @@ for i in range(NUMBER_OF_SAMPLES):
     current_final_state = np.argmax(output_data)
     data_to_file += current_word + "," + str(current_final_state) + "\n"
 
-with open("data/graph_data.csv", "w") as f:
+with open("data/" + EXPERIMENT_NAME + "_graph_data.csv", "w") as f:
     f.write(data_to_file)
 

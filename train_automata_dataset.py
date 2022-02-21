@@ -1,12 +1,12 @@
 from bp_network import CustomRNNCell, preprocess
-import graphviz
+#import graphviz
 import numpy as np
 import tensorflow as tf
 import rstr
 from sklearn.model_selection import train_test_split
 from train_config import *
 
-with open('data/graph_data.csv', 'r') as f:
+with open('data/' + EXPERIMENT_NAME + '_graph_data.csv', 'r') as f:
     dataset = []
     labels = []
     for line in f:
@@ -29,7 +29,7 @@ rnn = tf.keras.layers.RNN(cell)  # , return_sequences=True
 input_1 = tf.keras.Input((None, len(DICTIONARY), NUMBER_OF_STATES, NUMBER_OF_STATES), dtype=tf.float32)
 rnn1 = rnn(input_1, initial_state=tf.convert_to_tensor(START_POSITION))
 model = tf.keras.models.Model(input_1, rnn1)
-model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
+model.compile(optimizer="adam", loss="mse", metrics=["accuracy"])
 X_train_adj = preprocess(X_train, len(DICTIONARY), NUMBER_OF_STATES)
 X_test_adj = preprocess(X_test, len(DICTIONARY), NUMBER_OF_STATES)
 history = model.fit(X_train_adj, y_train, epochs=EPOCHS, batch_size=1, verbose=0, validation_data=(X_test_adj, y_test))
@@ -61,7 +61,7 @@ from tensorflow.keras.layers import Dense, SimpleRNN
 model = Sequential()
 model.add(SimpleRNN(10, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY)), activation='relu'))
 model.add(Dense(10, activation='relu'))
-model.add(Dense(units=NUMBER_OF_STATES, activation='relu'))
+model.add(Dense(units=NUMBER_OF_STATES, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 X_train_adj = to_categorical(X_train)
 X_test_adj = to_categorical(X_test)
