@@ -42,9 +42,9 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 from tensorflow.keras.utils import to_categorical
 model = Sequential()
-model.add(LSTM(10, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY))))
+model.add(LSTM(NUMBER_OF_STATES, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY))))
 model.add(Dropout(0.5))
-model.add(Dense(10, activation='relu'))
+model.add(Dense(NUMBER_OF_STATES, activation='relu'))
 model.add(Dense(NUMBER_OF_STATES, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 X_train_adj = to_categorical(X_train)
@@ -59,8 +59,8 @@ lstm_val_acc = history.history["val_acc"]
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, SimpleRNN
 model = Sequential()
-model.add(SimpleRNN(10, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY)), activation='relu'))
-model.add(Dense(10, activation='relu'))
+model.add(SimpleRNN(NUMBER_OF_STATES, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY)), activation='relu'))
+model.add(Dense(NUMBER_OF_STATES, activation='relu'))
 model.add(Dense(units=NUMBER_OF_STATES, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 X_train_adj = to_categorical(X_train)
@@ -79,4 +79,4 @@ plt.plot(lstm_val_acc, "g--", label='lstm_val_acc')
 plt.plot(rnn_acc, "r-", label='rnn_acc')
 plt.plot(rnn_val_acc, "r--", label='rnn_val_acc')
 plt.legend()
-plt.savefig(EXPERIMENT_NAME + '.png')
+plt.savefig("out/" + EXPERIMENT_NAME + '.png')

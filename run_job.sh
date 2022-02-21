@@ -12,5 +12,5 @@ echo "SLURM_JOBID"=$SLURM_JOBID
 echo "SLURM_JOB_NODELIST"=$SLURM_JOB_NODELIST
 ### Start your code below ####
 module load anaconda ### load anaconda module
-conda activate bp_learning_env ### activate a conda environment, replace my_env with your conda environment
-python ~/repos/BPLearning/test_gpu.py ### this command executes jupyter lab – replace with your own command e.g. ‘python my.py my_arg’
+source activate bp_learning_env ### activate a conda environment, replace my_env with your conda environment
+python ~/repos/BPLearning/train_automata_dataset.py ### this command executes jupyter lab – replace with your own command e.g. ‘python my.py my_arg’
