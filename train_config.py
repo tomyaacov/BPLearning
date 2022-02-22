@@ -36,7 +36,7 @@ COMPOSITE_STATE_NUM = [2,2,3]
 COMPOSITE_START_POSITION = [[[1., 0.]],[[1., 0.]],[[1., 0., 0.]]]
 SEQUENCE_LENGTH = 8
 START_POSITION = [[1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]]
-EPOCHS = 2
+EPOCHS = 100
 TEST_SPLIT_PCT = 0.1
 import re
 def f(w):
