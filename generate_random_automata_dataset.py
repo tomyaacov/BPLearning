@@ -42,4 +42,3 @@ for i in range(NUMBER_OF_SAMPLES):
 
 with open("data/" + EXPERIMENT_NAME + "_graph_data.csv", "w") as f:
     f.write(data_to_file)
-

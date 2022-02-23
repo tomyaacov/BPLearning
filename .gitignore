@@ -110,4 +110,4 @@ venv.bak/
 *.iml
 .vscode/
 .DS_Store
-#data/
+out/

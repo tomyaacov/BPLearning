@@ -29,7 +29,7 @@ class CustomRNNCell(tf.keras.layers.Layer):
         a = tf.multiply(inputs, self.M)
         b = tf.reduce_sum(a, 1)
         c = tf.matmul(states, b)
-        output = tf.divide(c,tf.reduce_sum(c))
+        output = tf.divide(c,tf.reduce_sum(c)) # try softmax
         return output[:,0], output[:,0]
 
     def get_config(self):

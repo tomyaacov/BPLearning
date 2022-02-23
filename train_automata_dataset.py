@@ -75,6 +75,7 @@ print("rnn val acc", history.history["val_acc"])
 rnn_val_acc = history.history["val_acc"]
 
 import matplotlib.pyplot as plt
+plt.ylim(0,1)
 plt.plot(ours_acc, "b-", label='ours_acc')
 plt.plot(ours_val_acc, "b--", label='ours_val_acc')
 plt.plot(lstm_acc, "g-", label='lstm_acc')
