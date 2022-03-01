@@ -13,6 +13,7 @@ class CustomRNNCell(tf.keras.layers.Layer):
 
     def build(self, input_shapes):
         # expect input_shape to contain 1 item, (batch, i1)
+        print(input_shapes)
         i1 = input_shapes[2]
         if isinstance(self.fixed_weights, np.ndarray):
             self.M = self.add_weight(  # TODO: change
@@ -29,7 +30,7 @@ class CustomRNNCell(tf.keras.layers.Layer):
         a = tf.multiply(inputs, self.M)
         b = tf.reduce_sum(a, 1)
         c = tf.matmul(states, b)
-        output = tf.divide(c,tf.reduce_sum(c)) # try softmax
+        output = tf.nn.softmax(c)  # before: output = tf.divide(c,tf.reduce_sum(c))
         return output[:,0], output[:,0]
 
     def get_config(self):
@@ -46,43 +47,56 @@ def preprocess(a, depth, number_of_states):
     d[c[0], c[1], a, :, :] = b[c[0], c[1], a] = 1
     return d
 
-
 if __name__ == "__main__":
     DICTIONARY = ['A', 'B', 'C']
     NUMBER_OF_STATES = 3
     START_POSITION = [[1., 0., 0.]]
-
-    cell = CustomRNNCell(NUMBER_OF_STATES)
+    cell = CustomRNNCell(NUMBER_OF_STATES, dictionary_size=len(DICTIONARY))
     rnn = tf.keras.layers.RNN(cell)  # , return_sequences=True
     input_1 = tf.keras.Input((None, len(DICTIONARY), NUMBER_OF_STATES, NUMBER_OF_STATES), dtype=tf.float32)
     rnn1 = rnn(input_1, initial_state=tf.convert_to_tensor(START_POSITION))
-    outputs = tf.keras.layers.Dense(1, activation='sigmoid')(rnn1)
-    model = tf.keras.models.Model(input_1, outputs)
+    model = tf.keras.models.Model(input_1, rnn1)
     model.compile(optimizer="adam", loss="mse", metrics=["accuracy"])
-
     input_1_data = np.array([[1, 0, 2]])
-
-    input_1_data = preprocess(input_1_data, len(DICTIONARY))
+    input_1_data = preprocess(input_1_data, len(DICTIONARY), NUMBER_OF_STATES)
     print(model.predict(input_1_data))
 
-    f = open('other_paper_code/generate_dataset.txt', 'r')
-    dataset = []
-    labels = []
-    for line in f:
-        x, y = line.split(' ')
-        x = [DICTIONARY.index(i) for i in list(x)]
-        isOk = 1
-        if y[0] == '0':
-            isOk = 0
-        dataset.append(x)
-        labels.append(isOk)
-    dataset = np.array(dataset)
-    labels = np.array(labels)
-
-    dataset = preprocess(dataset, len(DICTIONARY))
-
-    print(model.summary())
-    model.fit(dataset, labels, epochs=3, batch_size=1, verbose=2)
+# if __name__ == "__main__":
+#     DICTIONARY = ['A', 'B', 'C']
+#     NUMBER_OF_STATES = 3
+#     START_POSITION = [[1., 0., 0.]]
+#
+#     cell = CustomRNNCell(NUMBER_OF_STATES)
+#     rnn = tf.keras.layers.RNN(cell)  # , return_sequences=True
+#     input_1 = tf.keras.Input((None, len(DICTIONARY), NUMBER_OF_STATES, NUMBER_OF_STATES), dtype=tf.float32)
+#     rnn1 = rnn(input_1, initial_state=tf.convert_to_tensor(START_POSITION))
+#     outputs = tf.keras.layers.Dense(1, activation='sigmoid')(rnn1)
+#     model = tf.keras.models.Model(input_1, outputs)
+#     model.compile(optimizer="adam", loss="mse", metrics=["accuracy"])
+#
+#     input_1_data = np.array([[1, 0, 2]])
+#
+#     input_1_data = preprocess(input_1_data, len(DICTIONARY))
+#     print(model.predict(input_1_data))
+#
+#     f = open('other_paper_code/generate_dataset.txt', 'r')
+#     dataset = []
+#     labels = []
+#     for line in f:
+#         x, y = line.split(' ')
+#         x = [DICTIONARY.index(i) for i in list(x)]
+#         isOk = 1
+#         if y[0] == '0':
+#             isOk = 0
+#         dataset.append(x)
+#         labels.append(isOk)
+#     dataset = np.array(dataset)
+#     labels = np.array(labels)
+#
+#     dataset = preprocess(dataset, len(DICTIONARY))
+#
+#     print(model.summary())
+#     model.fit(dataset, labels, epochs=3, batch_size=1, verbose=2)
 
 
 # from tensorflow.keras.models import Sequential, Model

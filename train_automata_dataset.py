@@ -1,8 +1,6 @@
 from bp_network import CustomRNNCell, preprocess
-#import graphviz
 import numpy as np
 import tensorflow as tf
-import rstr
 from sklearn.model_selection import train_test_split
 from train_config import *
 import os
@@ -50,7 +48,7 @@ from tensorflow.keras.layers import Dense, Dropout, LSTM
 from tensorflow.keras.utils import to_categorical
 model = Sequential()
 model.add(LSTM(NUMBER_OF_STATES, input_shape=(SEQUENCE_LENGTH, len(DICTIONARY))))
-model.add(Dropout(0.5))
+#model.add(Dropout(0.5))
 model.add(Dense(NUMBER_OF_STATES, activation='relu'))
 model.add(Dense(NUMBER_OF_STATES, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -92,7 +90,7 @@ for ind, num_of_s in enumerate(COMPOSITE_STATE_NUM):
     rnns.append(tf.keras.layers.RNN(cells[ind]))  # , return_sequences=True
     rnn_outputs.append(rnns[ind](model_inputs[ind], initial_state=tf.convert_to_tensor(COMPOSITE_START_POSITION[ind])))
     models.append(tf.keras.models.Model(model_inputs[ind], rnn_outputs[ind]))
-    models[ind].summary()
+    #models[ind].summary()
     X_train_adj.append(preprocess(X_train, len(DICTIONARY), num_of_s))
     X_test_adj.append(preprocess(X_test, len(DICTIONARY), num_of_s))
 
@@ -102,7 +100,7 @@ intermediate = l(con)
 l2 = tf.keras.layers.Dense(NUMBER_OF_STATES, activation='softmax')
 final_output = l2(intermediate)
 composed_model = tf.keras.models.Model(inputs=model_inputs, outputs=final_output)
-composed_model.summary()
+#composed_model.summary()
 composed_model.compile(optimizer="adam", loss="mse", metrics=["accuracy"])
 
 def batch_gen(dataset_list, labels):
