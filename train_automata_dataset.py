@@ -11,7 +11,7 @@ import time
 
 DIR = os.path.dirname(os.path.realpath(__file__))
 print("start running experiment", sys.argv[1])
-with open(os.path.join("resources", sys.argv[1]), "r") as f:
+with open(os.path.join(DIR, "resources", sys.argv[1]), "r") as f:
     exec(f.read())
 
 dataset = []
