@@ -13,7 +13,6 @@ class CustomRNNCell(tf.keras.layers.Layer):
 
     def build(self, input_shapes):
         # expect input_shape to contain 1 item, (batch, i1)
-        print(input_shapes)
         i1 = input_shapes[2]
         if isinstance(self.fixed_weights, np.ndarray):
             self.M = self.add_weight(  # TODO: change
@@ -30,7 +29,8 @@ class CustomRNNCell(tf.keras.layers.Layer):
         a = tf.multiply(inputs, self.M)
         b = tf.reduce_sum(a, 1)
         c = tf.matmul(states, b)
-        output = tf.nn.softmax(c)  # before: output = tf.divide(c,tf.reduce_sum(c))
+        output = tf.divide(c, tf.reduce_sum(c))
+        #output = tf.nn.softmax(c)  # before
         return output[:,0], output[:,0]
 
     def get_config(self):

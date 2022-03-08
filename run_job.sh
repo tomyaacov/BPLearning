@@ -13,4 +13,6 @@ echo "SLURM_JOB_NODELIST"=$SLURM_JOB_NODELIST
 ### Start your code below ####
 module load anaconda ### load anaconda module
 source activate bp_learning_env ### activate a conda environment, replace my_env with your conda environment
-python ~/repos/BPLearning/train_automata_dataset.py ### this command executes jupyter lab – replace with your own command e.g. ‘python my.py my_arg’
+python ~/repos/BPLearning/train_automata_dataset.py 1.py
+python ~/repos/BPLearning/train_automata_dataset.py 2.py
+python ~/repos/BPLearning/train_automata_dataset.py 3.py
